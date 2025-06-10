@@ -8,7 +8,7 @@ image:
   repository: ajs3ra8/number-guess-game
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "15566746621"
+  tag: "15567870945"
 
 ingress:
   enabled: false
