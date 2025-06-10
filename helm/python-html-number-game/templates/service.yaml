@@ -1,0 +1,15 @@
+# Service for the application
+apiVersion: v1
+kind: Service
+metadata:
+  name: number-guess-game
+  labels:
+    app: number-guess-game
+spec:
+  ports:
+  - port: 80
+    targetPort: 5000
+    protocol: TCP
+  selector:
+    app: number-guess-game
+  type: NodePort
