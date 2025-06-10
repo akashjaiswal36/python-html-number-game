@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Number Guessing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #e3f2fd, #fff);
+            text-align: center;
+            padding: 50px;
+            overflow-x: hidden;
+        }
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            display: inline-block;
+            animation: fadeIn 1s ease;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 100px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            background: #2196f3;
+            color: white;
+            border: none;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .message.show {
+            opacity: 1;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 Number Guessing Game</h1>
+        <img src="{{ url_for('static', filename='images/pic.jpeg') }}">
+        <p>Guess a number between 1 and 100</p>
+
+        <form method="POST">
+            <input type="text" name="guess" placeholder="Your guess" required>
+            <button type="submit">Submit</button>
+        </form>
+
+        <div class="message {{ 'show' if message }}">{{ message }}</div>
+        <p>Attempts: {{ attempts }}</p>
+        <a href="/reset"><button>Reset Game</button></a>
+    </div>
+
+    {% if "Correct!" in message %}
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        setTimeout(() => {
+            confetti({
+                particleCount: 150,
+                spread: 80,
+                origin: { y: 0.6 }
+            });
+        }, 300);
+    </script>
+    {% endif %}
+</body>
+</html>

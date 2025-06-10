@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: number-guess-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: number-guess
+  template:
+    metadata:
+      labels:
+        app: number-guess
+    spec:
+      containers:
+      - name: number-guess-container
+        image: ajs3ra8/number-guess-game:v2
+        ports:
+        - containerPort: 5000
