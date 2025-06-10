@@ -1,0 +1,62 @@
+# CICD using GitHub actions
+
+name: CI/CD
+
+# Exclude the workflow to run on changes to the helm chart
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'helm/**'
+      - 'k8s/**'
+      - 'README.md'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout your repository code
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Step 2: Log in to DockerHub
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    # Step 3: Build the Docker image
+  
+    - name: Build and Push action
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/number-guess-game:${{github.run_id}}
+
+  update-newtag-in-helm-chart:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.TOKEN }}
+
+    - name: Update tag in Helm chart
+      run: |
+        sed -i 's/tag: .*/tag: "${{github.run_id}}"/' helm/python-html-number-game/values.yaml
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.email "akash.jaiswal36@gmail.com"
+        git config --global user.name "akashjaiswal36"
+        git add helm/python-html-number-game/values.yaml
+        git commit -m "Update tag in Helm chart"
+        git push
