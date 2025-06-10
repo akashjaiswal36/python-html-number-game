@@ -24,4 +24,4 @@ ENV PYTHONPATH=/app/venv
 EXPOSE 5000
 
 # Start app with absolute path to Python entrypoint
-CMD ["/usr/bin/python3", "app.py"]
+CMD ["app.py"]
