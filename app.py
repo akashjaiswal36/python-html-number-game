@@ -25,7 +25,7 @@ def index():
         elif guess > number:
             message = 'Too high!'
         else:
-            message = '🎉 Correct! You guessed it in {} attempts.'.format(session['attempts'])
+            message = '🎉 Correct! You guessed it in {} attempts.'.format(session['attempts'], session['guess'])
 
     return render_template('index.html', message=message, attempts=session['attempts'])
 
